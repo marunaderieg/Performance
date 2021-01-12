@@ -15,8 +15,8 @@ int main(int argc, char* argv[]) {
     clock_gettime(CLOCK_REALTIME, &start);
     
     //initialize data
-    int n = 1000000;
     int i,j;
+    int n = 1000000;
     if (argc > 1) {
             n = atoi(argv[1]);
     }
@@ -26,6 +26,10 @@ int main(int argc, char* argv[]) {
     
     // Generate the array.
     int *a = (int *)malloc (sizeof (int) * n);
+    if (a == NULL) {
+        printf("Error: Could not allocate array of size %d\n", n);
+        return 1;
+    }
     for (i=0; i<n; i++ ) {
         a[i] = rand()%n;
     }

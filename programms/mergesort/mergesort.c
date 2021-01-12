@@ -21,13 +21,14 @@ int main(int argc, char *argv[]) {
     struct timespec start, end;
     clock_gettime(CLOCK_REALTIME, &start);
     
-    if (argc != 2)
-    {
-        printf("Usage: %s array_size threshold\n", argv[0]);
-        return 1;
+    //initialize data
+    int size = 1000000;
+    if (argc == 2) {
+        size = atoi(argv[1]);
     }
-
-    int size = atoi(argv[1]);       // Array size
+    else {
+        printf ("No value for list length has been provided (first argument). Default length is 1000000.\n");
+    }
     int thresh = 100;    // Threshold
 
     // Array allocation

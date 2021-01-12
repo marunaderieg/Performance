@@ -30,14 +30,18 @@ int main(int argc, char *argv[]){
     int* Arr;
 
     number = 1000000;
-    if (argc == 2) {
+    if (argc >1) {
             number = atoi(argv[1]);
     }
     else {
-        printf ("No value for list length has been provided. Default length is 1000000.\n");
+        printf ("No value for list length has been provided (first argument). Default length is 1000000.\n");
     }
 
     Arr = (int *)malloc( number * sizeof(int));
+    if (Arr == NULL) {
+    printf("Error: Could not allocate array of size %d\n",number);
+    return 1;
+    }
     for (i=0; i<number; i++ ) {
         Arr[i] = rand()%number;
     }
