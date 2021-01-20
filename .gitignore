@@ -1,0 +1,4 @@
+programms/bubblesort/par.o
+prgramms/mergesort/par.o
+*.log
+*.o
