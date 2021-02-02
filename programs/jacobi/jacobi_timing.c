@@ -268,7 +268,7 @@ int main(int argc, char *argv[]){
     }
     /* write smallest execution time to time file */
     FILE * timefile;
-    timefile = fopen ("./time_algorithm.txt","w");
+    timefile = fopen ("./time.txt","w");
     fprintf (timefile, "%f",time_min);
     fclose (timefile);
     
