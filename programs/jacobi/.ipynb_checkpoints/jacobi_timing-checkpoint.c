@@ -6,10 +6,11 @@
     #include <sys/time.h>
 #endif
 #pragma cling load("libomp.so")
-#define OMP_NUM_THREADS 2
 #define U(i,j) u[(i)*n+(j)]
 #define UOLD(i,j) uold[(i)*n+(j)]
 #define F(i,j) f[(i)*n+(j)]
+#define NUMTHREADS 64
+#define REPEATS 10
 
 /* 
 ******************************************************************
@@ -97,8 +98,6 @@ void jacobi (
     error = sqrt(error) /(n*m);
 
   } /* while */
-  printf("Total Number of Iterations: %d\n",k);
-  printf("Residual: %f\n",error);
 }
 
 /******************************************************
@@ -169,58 +168,77 @@ void error_check(
 
 int main(int argc, char *argv[]){
     /*initialize data*/
-    int n=100, m=100, mits=50, num_threads=omp_get_num_procs();
+    int n=100, m=100, mits=50, num_threads=NUMTHREADS, repeats=REPEATS;
     double tol=1e-15, relax=1.0, alpha=0.8;
     double *u, *f, dx, dy, r1;
     char test;
+    double time,time_min,time_start,time_end;
 
     /*check for passed arguments*/
     if (argc == 1) {
         printf("No arguments have been passed. Defaults are set to: \n");
         printf("Argument 1: Number of Threads: %d \n",num_threads);
-        printf("Argument 2 and 3: Grid dimension in x,y direction: %d, %d \n",n,m);
-        printf("Argument 4: Helmholts constant (alpha): %f\n",alpha);
-        printf("Argument 5: Successive over-relaxation parameter: %f\n",relax);
-        printf("Argument 6: Error tolerance for iterrative solver: 1e-15\n");
-        printf("Argument 7: Maximum iterations for solver: %d\n",mits);      
+        printf("Argument 2: Number of Repeats: %d \n",repeats);
+        printf("Argument 3 and 4: Grid dimension in x,y direction: %d, %d \n",n,m);
+        printf("Argument 5: Helmholts constant (alpha): %f\n",alpha);
+        printf("Argument 6: Successive over-relaxation parameter: %f\n",relax);
+        printf("Argument 7: Error tolerance for iterrative solver: 1e-15\n");
+        printf("Argument 8: Maximum iterations for solver: %d\n",mits);      
     }
     else if (argc==2){
         num_threads = atoi(argv[1]);
         printf("Number of Threads is set to %d\n",num_threads);
+        printf("No argument for Number of Repeats has been passed. Defaults is set to: %d\n",repeats);
         printf("No arguments for Jacobi solver have been passed. Defaults are set to: \n");
-        printf("Argument 2 and 3: Grid dimension in x,y direction: %d, %d \n",n,m);
-        printf("Argument 4: Helmholts constant (alpha): %f\n",alpha);
-        printf("Argument 5: Successive over-relaxation parameter: %f\n",relax);
-        printf("Argument 6: Error tolerance for iterrative solver: 1e-15\n");
-        printf("Argument 7: Maximum iterations for solver: %d\n",mits);   
+        printf("Argument 3 and 4: Grid dimension in x,y direction: %d, %d \n",n,m);
+        printf("Argument 5: Helmholts constant (alpha): %f\n",alpha);
+        printf("Argument 6: Successive over-relaxation parameter: %f\n",relax);
+        printf("Argument 7: Error tolerance for iterrative solver: 1e-15\n");
+        printf("Argument 8: Maximum iterations for solver: %d\n",mits);     
     }
-    else if (argc<8){
-        num_threads=atoi(argv[1]);
+    else if (argc==3){
+        num_threads = atoi(argv[1]);
+        repeats = atoi(argv[2]);
         printf("Number of Threads is set to %d\n",num_threads);
-        printf("An incomplete list of arguments for the Jacobi solver has been passed. Provide complete list of arguments to override default values. Defaults are set to: \n");
-        printf("Argument 2 and 3: Grid dimension in x,y direction: %d, %d \n",n,m);
-        printf("Argument 4: Helmholts constant (alpha): %f\n",alpha);
-        printf("Argument 5: Successive over-relaxation parameter: %f\n",relax);
-        printf("Argument 6: Error tolerance for iterrative solver: 1e-15\n");
-        printf("Argument 7: Maximum iterations for solver: %d\n",mits);  
+        printf("Number of Repeats is set to %d\n",repeats);
+        printf("No arguments for Jacobi solver have been passed. Defaults are set to: \n");
+        printf("Argument 3 and 4: Grid dimension in x,y direction: %d, %d \n",n,m);
+        printf("Argument 5: Helmholts constant (alpha): %f\n",alpha);
+        printf("Argument 6: Successive over-relaxation parameter: %f\n",relax);
+        printf("Argument 7: Error tolerance for iterrative solver: 1e-15\n");
+        printf("Argument 8: Maximum iterations for solver: %d\n",mits);    
     }
-    else if (argc ==8) {
+    else if (argc<9){
         num_threads=atoi(argv[1]);
-        n = atoi(argv[2]);
-        m = atoi(argv[3]);
-        alpha = atoi(argv[4]);
-        relax = atoi(argv[5]);
-        tol = atoi(argv[6]);
-        mits = atoi(argv[7]);
+        repeats = atoi(argv[2]);
+        printf("Number of Threads is set to %d\n",num_threads);
+        printf("Number of Repeats is set to %d\n",repeats);
+        printf("An incomplete list of arguments for the Jacobi solver has been passed. Provide complete list of arguments to override default values. Defaults are set to: \n");
+        printf("Argument 3 and 4: Grid dimension in x,y direction: %d, %d \n",n,m);
+        printf("Argument 5: Helmholts constant (alpha): %f\n",alpha);
+        printf("Argument 6: Successive over-relaxation parameter: %f\n",relax);
+        printf("Argument 7: Error tolerance for iterrative solver: 1e-15\n");
+        printf("Argument 8: Maximum iterations for solver: %d\n",mits);  
+    }
+    else if (argc ==9) {
+        num_threads = atoi(argv[1]);
+        repeats = atoi(argv[2]);
+        n = atoi(argv[3]);
+        m = atoi(argv[4]);
+        alpha = atoi(argv[5]);
+        relax = atoi(argv[6]);
+        tol = atoi(argv[7]);
+        mits = atoi(argv[8]);
     }
     else {
         printf("You passed too many arguments. Provide 0,1 or 7 arguments. Defaults are set to:\n");
         printf("Argument 1: Number of Threads: %d \n",num_threads);
-        printf("Argument 2 and 3: Grid dimension in x,y direction: %d, %d \n",n,m);
-        printf("Argument 4: Helmholts constant (alpha): %f\n",alpha);
-        printf("Argument 5: Successive over-relaxation parameter: %f\n",relax);
-        printf("Argument 6: Error tolerance for iterrative solver: 1e-15\n");
-        printf("Argument 7: Maximum iterations for solver: %d\n",mits);  
+        printf("Argument 2: Number of Repeats: %d\n",repeats);
+        printf("Argument 3 and 4: Grid dimension in x,y direction: %d, %d \n",n,m);
+        printf("Argument 5: Helmholts constant (alpha): %f\n",alpha);
+        printf("Argument 6: Successive over-relaxation parameter: %f\n",relax);
+        printf("Argument 7: Error tolerance for iterrative solver: 1e-15\n");
+        printf("Argument 8: Maximum iterations for solver: %d\n",mits);  
     }
 
     /*allocate data*/
@@ -237,13 +255,25 @@ int main(int argc, char *argv[]){
     /* arrays are allocated and initialzed */
     initialize(n, m, alpha, &dx, &dy, u, f);
 
-    /* Solve Helmholtz eqiation */
-    r1 = omp_get_wtime();
-    jacobi(n, m, dx, dy, alpha, relax, u,f, tol, mits);
-    r1 = omp_get_wtime() - r1;
+    /* solve Helmholtz eqiation multiple times and save minimal execution time*/
+    for(int i=0;i<repeats;i++){
+        time_start = omp_get_wtime();
+        jacobi(n, m, dx, dy, alpha, relax, u,f, tol, mits);
+        time_end = omp_get_wtime();
+        time = time_end-time_start;
+        if (i==0) time_min = time;
+        else {
+            if (time<time_min) time_min = time;
+        }
+    }
+    /* write smallest execution time to time file */
+    FILE * timefile;
+    timefile = fopen ("./time_algorithm.txt","w");
+    fprintf (timefile, "%f",time_min);
+    fclose (timefile);
     
     /* output and error check */
-    printf("elapsed time: %f\n",r1);
-    printf("MFlops: %f \n",mits*(m-2)*(n-2)*0.000001*13/r1);
+    printf("Smallest execution time of %d runs: %f \n",repeats,time_min);    
+    printf("MFlops: %f \n",mits*(m-2)*(n-2)*0.000001*13/time_min);
     error_check(n, m, alpha, dx, dy, u, f); 
 }

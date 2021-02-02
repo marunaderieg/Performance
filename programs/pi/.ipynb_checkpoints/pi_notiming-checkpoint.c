@@ -4,6 +4,7 @@
 #pragma cling load("libomp.so")
 #include <stdio.h>
 #include <stdlib.h>
+#define NUMTHREADS 64
 
 double f(double a)
 {
@@ -35,7 +36,7 @@ double CalcPi(int n, int thread_nr)
 int main(int argc, char *argv[]){
     //initialize data
     double fPi;
-    int num_threads = 64;
+    int num_threads = NUMTHREADS;
     int n = 150000000;
     //check for passed arguments
     if (argc > 1) {

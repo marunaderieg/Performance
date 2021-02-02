@@ -6,12 +6,10 @@
     #include <sys/time.h>
 #endif
 #pragma cling load("libomp.so")
-#define OMP_NUM_THREADS 2
 #define U(i,j) u[(i)*n+(j)]
 #define UOLD(i,j) uold[(i)*n+(j)]
 #define F(i,j) f[(i)*n+(j)]
-#define REPEATS 10
-
+#define NUMTHREADS 64
 
 /* 
 ******************************************************************
@@ -99,6 +97,8 @@ void jacobi (
     error = sqrt(error) /(n*m);
 
   } /* while */
+  printf("Total Number of Iterations: %d\n",k);
+  printf("Residual: %f\n",error);
 }
 
 /******************************************************
@@ -169,11 +169,10 @@ void error_check(
 
 int main(int argc, char *argv[]){
     /*initialize data*/
-    int n=100, m=100, mits=50, num_threads=omp_get_num_procs(), repeats=REPEATS;
+    int n=100, m=100, mits=50, num_threads=NUMTHREADS;
     double tol=1e-15, relax=1.0, alpha=0.8;
     double *u, *f, dx, dy, r1;
     char test;
-    double time,time_min,time_start,time_end;
 
     /*check for passed arguments*/
     if (argc == 1) {
@@ -238,22 +237,13 @@ int main(int argc, char *argv[]){
     /* arrays are allocated and initialzed */
     initialize(n, m, alpha, &dx, &dy, u, f);
 
-    /* solve Helmholtz eqiation multiple times and save minimal execution time*/
-    for(int i=0;i<repeats;i++){
-        time_start = omp_get_wtime();
-        jacobi(n, m, dx, dy, alpha, relax, u,f, tol, mits);
-        time_end = omp_get_wtime();
-        time = time_end-time_start;
-        if (i==0){
-            time_min = time;
-        }
-        else {
-            if (time<time_min) time_min = time_end-time_start;
-        }
-    }
+    /* Solve Helmholtz eqiation */
+    r1 = omp_get_wtime();
+    jacobi(n, m, dx, dy, alpha, relax, u,f, tol, mits);
+    r1 = omp_get_wtime() - r1;
     
     /* output and error check */
-    printf("Smallest execution time of %d runs: %f \n",repeats,time_min);    
-    printf("MFlops: %f \n",mits*(m-2)*(n-2)*0.000001*13/time_min);
+    printf("elapsed time: %f\n",r1);
+    printf("MFlops: %f \n",mits*(m-2)*(n-2)*0.000001*13/r1);
     error_check(n, m, alpha, dx, dy, u, f); 
 }
