@@ -47,18 +47,18 @@ int main(int argc, char *argv[]){
         printf ("Default value for number of intervals (second argument) is: %d.\n", n);
     }
     
-    if (argc == 2) {
+    else if (argc == 2) {
         num_threads = atoi(argv[1]);
         printf("No argument for number of intervals has been passed.\n"); 
         printf ("Default value for number of intervals (second argument) is: %d.\n", n);
     }
     
-    if (argc == 3) {
+    else if (argc == 3) {
         num_threads = atoi(argv[1]);
         n = atoi(argv[2]);
     }
     
-    if (argc>3) {
+    else {
         printf("Error: Too many arguments have been passed.\n")
         printf("Default value for number of threads (first argument) is: %d.\n", num_threads);
         printf ("Default value for number of intervals (second argument) is: %d.\n", n);

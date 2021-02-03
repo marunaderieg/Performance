@@ -4,8 +4,7 @@
 #pragma cling load("libomp.so")
 #define NUMTHREADS 64
 #define REPEATS 10
-#define N 27 //we calculate the n't member of the fibonacci sequence
-
+#define N 40 //we calculate the n't member of the fibonacci sequence
 
 int ser_fib(int n)
 {
@@ -62,25 +61,25 @@ int main(int argc, char *argv[]){
         printf("Default Value for element of the fibonacci sequence (third argument) is %d.\n",n);
     }
     
-    if (argc==2) {
+    else if (argc==2) {
         num_threads = atoi(argv[1]);
         printf("No value for number of repeats has been passed (second argument). Default is set to %d.\n",repeats);
         printf("No value for element of the fibonacci sequence has been passed (third argument). Default is set to: %d.\n",n);
     }
     
-    if (argc==3) {
+    else if (argc==3) {
         num_threads = atoi(argv[1]);
         repeats = atoi(argv[2]);
         printf("No value for n has been passed (third argument).\n N defines which element of the fibonacci seqence is computed. Default is set to: %d.\n",n);
     }
     
-    if (argc==4) {
+    else if (argc==4) {
         num_threads = atoi(argv[1]);
         repeats = atoi(argv[2]);
         n = atoi(argv[3]);
     }
     
-    if (argc > 4) {
+    else {
         printf("You passed too many arguments. Arguments to be passed are: \n");
         printf("1.Number of Threads, 2.Number of Repeats, 3.Which element of fibonacci sequence (type integer).\n");
         printf("Default Value for number of threads is set to: %d.\n",num_threads);
