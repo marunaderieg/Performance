@@ -85,6 +85,6 @@ int main(int argc, char *argv[]){
     fibonacci=fib(n);
     }
 
-    printf("fib(%d)=%d \n",n,fibonacci);
+    //printf("fib(%d)=%d \n",n,fibonacci);
     //error_check(n,fibonacci);
 }

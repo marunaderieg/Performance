@@ -89,7 +89,7 @@ int main(int argc, char *argv[]){
 
     omp_set_num_threads(num_threads);
     
-    //calculate pi multiple times and save minimal execution time
+    //calculate fibonacci multiple times and save minimal execution time
     for(int i=0;i<repeats;i++){
         time_start = omp_get_wtime();
     #pragma omp parallel

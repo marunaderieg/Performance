@@ -2,9 +2,7 @@
 #include <stdlib.h>
 #include <omp.h>
 #pragma cling load("libomp.so")
-#define NUMTHREADS 64
-#define N 40 //we calculate the n't member of the fibonacci sequence
-
+#define N 40 //we calculate the n'th member of the fibonacci sequence
 
 int ser_fib(int n)
 {
@@ -19,6 +17,7 @@ int ser_fib(int n)
   return x+y;
 }
 
+/*
 int fib(int n)
 {
   int x, y;
@@ -42,6 +41,7 @@ int fib(int n)
   return x+y;
 
 }
+/*
 
 /*
 void error_check(int n, int result){
@@ -50,41 +50,28 @@ void error_check(int n, int result){
 } */
 
 int main(int argc, char *argv[]){
-    //initalize data
-    int n=N, fibonacci, num_threads=NUMTHREADS;
+    int n=N, fibonacci;
+    double time,time_min,time_start,time_end;
     
     //check for passed arguments
     if (argc==1) {
-        printf("You didn't pass any arguments. Arguments to be passed are: \n 1.Number of Threads, 2.Which element of fibonacci sequence (type integer).\n");
-        printf("Default Value for number of threads is set to: %d.\n",num_threads);
+        printf("You didn't pass any arguments.\n");
         printf("Default Value for element of the fibonacci sequence is %d.\n",n);
     }
     
     else if (argc==2) {
-        num_threads = atoi(argv[1]);
-        printf("No value for n has been passed (second argument).\n"); 
-        printf("N defines which element of the fibonacci seqence is computed. Default is set to: %d.\n",n);
-    }
-    
-    else if (argc==3) {
-        num_threads = atoi(argv[1]);
-        n = atoi(argv[2]);
+        n = atoi(argv[1]);
+
     }
     
     else {
         printf("You passed too many arguments. Arguments to be passed are: \n");
-        printf("1.Number of Threads, 2.Which element of fibonacci sequence (type integer).\n");
-        printf("Default Value for number of threads is set to: %d.\n",num_threads);
+        printf("1.Which element of fibonacci sequence (type integer).\n");
         printf("Default Value for element of the fibonacci sequence is %d.\n",n);
     }
 
-    omp_set_num_threads(num_threads);
-#pragma omp parallel
-    #pragma omp single
-    {
-    fibonacci=fib(n);
-    }
+    //calculate fibonacci
+    fibonacci=ser_fib(n);
 
-    //printf("fib(%d)=%d \n",n,fibonacci);
     //error_check(n,fibonacci);
 }
