@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #define REPEATS 10
 #define NUMTHREADS 64
+#define INTERVALS 150000000
 
 double f(double a)
 {
@@ -36,29 +37,44 @@ int main(int argc, char *argv[]){
     //initialize data
     int repeats = REPEATS;
     int num_threads = NUMTHREADS;
-    int n = 150000000;
+    int n = INTERVALS;
     double time,time_min,time_start,time_end,fPi;
 
+    
     //check for passed arguments
-    if (argc > 1) {
+    if (argc == 1) {
+        printf("No arguments have been passed.\n"); 
+        printf("Default value for number of threads (first argument) is: %d.\n", num_threads);
+        printf("Default value for repeats (second argument) is: %d.\n", repeats);
+        printf ("Default value for number of intervals (third argument) is: %d.\n", n);
+    }
+    
+    if (argc == 2) {
         num_threads = atoi(argv[1]);
+        printf("No argument for repeats and number of intervals have been passed.\n"); 
+        printf("Default value for repeats (second argument) is: %d.\n", repeats);
+        printf ("Default value for number of intervals (third argument) is: %d.\n", n);
     }
-    else {
-        printf ("No value for requested number of threads has been passed (first argument). Default is 64.\n");
-    } 
-    if (argc > 2) {
+    
+    if (argc == 3) {
+        num_threads = atoi(argv[1]);
         repeats = atoi(argv[2]);
+        printf("No argument for number of intervals has been passed.\n");
+        printf ("Default value for number of intervals (third argument) is: %d.\n", n);
     }
-    else {
-        printf ("No value for repeats has been passed (second argument). Default is 10.\n");
-    } 
-    if (argc > 3) {
+    
+    if (argc == 4) {
+        num_threads = atoi(argv[1]);
+        repeats = atoi(argv[2]);
         n = atoi(argv[3]);
     }
-    else {
-        printf ("No value for number of intervals has been passed (second argument). Default is 150'000'000.\n");
+    
+    if (argc>4) {
+        printf("Error: Too many arguments have been passed.\n")
+        printf("Default value for number of threads (first argument) is: %d.\n", num_threads);
+        printf("Default value for repeats (second argument) is: %d.\n", repeats);
+        printf ("Default value for number of intervals (third argument) is: %d.\n", n);
     }
-    if (argc > 4) printf ("Too many arguments. Values are set to default (Threads=64 ,Repeats=10, Nr of Intervals = 150'000'000)\n");
 
     
     //calculate pi multiple times and save minimal execution time
