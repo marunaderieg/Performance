@@ -59,7 +59,7 @@ int main(int argc, char *argv[]){
     }
     
     else {
-        printf("Error: Too many arguments have been passed.\n")
+        printf("Error: Too many arguments have been passed.\n");
         printf("Default value for number of threads (first argument) is: %d.\n", num_threads);
         printf ("Default value for number of intervals (second argument) is: %d.\n", n);
     }

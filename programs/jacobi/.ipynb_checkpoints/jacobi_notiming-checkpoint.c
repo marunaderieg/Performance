@@ -238,12 +238,8 @@ int main(int argc, char *argv[]){
     initialize(n, m, alpha, &dx, &dy, u, f);
 
     /* Solve Helmholtz eqiation */
-    r1 = omp_get_wtime();
     jacobi(n, m, dx, dy, alpha, relax, u,f, tol, mits);
-    r1 = omp_get_wtime() - r1;
     
-    /* output and error check */
-    printf("elapsed time: %f\n",r1);
-    printf("MFlops: %f \n",mits*(m-2)*(n-2)*0.000001*13/r1);
+    /* error check */
     error_check(n, m, alpha, dx, dy, u, f); 
 }
