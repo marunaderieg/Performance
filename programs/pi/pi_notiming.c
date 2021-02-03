@@ -43,7 +43,7 @@ int main(int argc, char *argv[]){
         num_threads = atoi(argv[1]);
     }
     else {
-        printf ("No value for requested number of threads has been passed (first argument). Default is 64.\n");
+        printf ("No value for requested number of threads has been passed (first argument). Default is: %d.\n",num_threads);
     } 
     if (argc > 2) {
         n = atoi(argv[2]);
