@@ -52,7 +52,6 @@ void error_check(int n, int result){
 
 int main(int argc, char *argv[]){
     int n=N, fibonacci, num_threads=NUMTHREADS;
-    double starttime;
     
     //check for passed arguments
     if (argc==1) {

@@ -52,7 +52,6 @@ void error_check(int n, int result){
 
 int main(int argc, char *argv[]){
     int n=N, fibonacci, num_threads=NUMTHREADS;
-    double starttime;
     
     //check for passed arguments
     if (argc==1) {
@@ -86,6 +85,7 @@ int main(int argc, char *argv[]){
     fibonacci=fib(n);
     }
 
+    printf("minimal elapsed time ")
     printf("fib(%d)=%d \n",n,fibonacci);
     //error_check(n,fibonacci);
 }
