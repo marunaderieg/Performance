@@ -1,8 +1,5 @@
 #include <omp.h>
 #pragma cling load("libomp.so")
-#pragma cling add_include_path("lib")
-#pragma cling load("lodepng.h")
-#pragma cling load ("lodepng.c")
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
@@ -10,9 +7,8 @@
 #define X_MIN -2.5
 #define X_MAX 1.5
 #define PI 3.1415927
-#define OUTPUT "outSolution.png"
-#define N 1920
-#define M 1080
+#define N 1000
+#define M 1000
 #define REPEATS 10
 #define NUMTHREADS 64
 
@@ -26,9 +22,9 @@ int main (int argc, char *argv[]) {
     double rx, ry, zx, zy, zx2, zy2;
     double time,time_min,time_start,time_end;
     int x, y, i, j, iteration;
-    unsigned char r[n*m];
-    unsigned char g[n*m];
-    unsigned char b[n*m];
+    unsigned char *r;
+    unsigned char *g;
+    unsigned char *b;
     char *output_filename = "picture.txt";
     FILE *output_unit;
     const double
@@ -77,6 +73,11 @@ int main (int argc, char *argv[]) {
         printf ("Default values for dimensions m and n of mandelbrot image are (third and forth argument): m=%d, n=%d.\n", m, n);
     }
 
+    //allocate data
+    r = malloc(n*m*sizeof(char));
+    g = malloc(n*m*sizeof(char));
+    b = malloc(n*m*sizeof(char));
+    
     //calculate mandelbrot set multiple times and save minimal execution time
     for(iteration=0;iteration<repeats;iteration++){
         time_start = omp_get_wtime();
@@ -95,9 +96,12 @@ int main (int argc, char *argv[]) {
                 zx = zx2 - zy2 + rx;
                 zx2 = zx * zx; zy2 = zy * zy;
             }
-            r[j] = 255 - (cos(i * PI /(double)MAX_ITER) + 1)/2 * 255;
-            g[j] = 255 - (sin(i * PI /(double)MAX_ITER) + 1)/3 * 255;
-            b[j] = 255 - (i/(double)MAX_ITER) * 255;
+            //r[j] = 255 - (cos(i * PI /(double)MAX_ITER) + 1)/2 * 255;
+            //g[j] = 255 - (sin(i * PI /(double)MAX_ITER) + 1)/3 * 255;
+            //b[j] = 255 - (i/(double)MAX_ITER) * 255;
+            *(r + j) = 255 - (cos(i * PI /(double)MAX_ITER) + 1)/2 * 255;
+            *(g + j) = 255 - (sin(i * PI /(double)MAX_ITER) + 1)/3 * 255;
+            *(b + j) = 255 - (i/(double)MAX_ITER) * 255;
         }
         time_end = omp_get_wtime();
         time = time_end-time_start;
@@ -111,9 +115,11 @@ int main (int argc, char *argv[]) {
     output_unit = fopen (output_filename, "w");
     fprintf (output_unit, "%d,%d,%d\n",m,n,0);
     for(j = 0; j < m * n; j++){
-        fprintf (output_unit, "%d,%d,%d\n", r[j], g[j], b[j]);
+        //fprintf (output_unit, "%d,%d,%d\n", r[j], g[j], b[j]);
+        fprintf(output_unit, "%d,%d,%d\n", *(r+j), *(g+j), *(b+j));
         }
     fclose (output_unit);
+    
     
     //write smallest execution time to time file
     FILE *timefile;
@@ -124,6 +130,11 @@ int main (int argc, char *argv[]) {
     //output
     printf("Smallest execution time of %d runs: %f \n",repeats,time_min);
     printf ("Graphics data written to \"%s\".\n", output_filename);
+    
+    //free data
+    free(r);
+    free(g);
+    free(b);
     
   return 0;
 
