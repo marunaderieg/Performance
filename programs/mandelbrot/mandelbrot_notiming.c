@@ -2,34 +2,39 @@
 Copyright of this code belongs to John Burkardt. Original Code accessed on 6.2.2021 on https://people.sc.fsu.edu/~jburkardt/c_src/mandelbrot_openmp/mandelbrot_openmp.c. Code has been edited by Maruna Derieg. 
 */
 
+#include <omp.h>
+#pragma cling load("libomp.so")
 # include <stdlib.h>
 # include <stdio.h>
 # include <math.h>
 # include <time.h>
 # include <omp.h>
 # define NUMTHREAD 64
+# define M 500
+# define N 500
 
 
 int i4_min (int i1, int i2);
 
-int main ( ) {
+int main (int argc, char *argv[]) {
   int num_threads = NUMTHREAD;
-  int m = 50;
-  int n = 50;
+  int m = M;
+  int n = N;
   int count_max = 2000;
-  int b[m][n];
+  int (*b)[n];
+  b = malloc(sizeof(int[m][n]));
+  int (*count)[n];
+  count = malloc(sizeof(int[m][n]));
+  int (*g)[n];
+  g = malloc(sizeof(int[m][n]));
+  int (*r)[n];
+  r = malloc(sizeof(int[m][n]));
   int c;
-  int count[m][n];
-  int g[m][n];
   int i;
   int j;
   int jhi;
   int jlo;
   int k;
-  char *output_filename = "mandelbrot_openmp.ppm";
-  FILE *output_unit;
-  int r[m][n];
-  double wtime;
   double x_max =   1.25;
   double x_min = - 2.25;
   double x;
@@ -41,7 +46,38 @@ int main ( ) {
   double y1;
   double y2;
 
-  wtime = omp_get_wtime ( );
+/* check for passed arguments */
+    if (argc == 1) {
+        printf("No arguments have been passed.\n"); 
+        printf("Default value for number of threads (first argument) is: %d.\n", num_threads);
+        printf ("Default values for dimensions m and n of mandelbrot image are (second and third argument): m=%d, n=%d.\n", m, n);
+    }
+    
+    else if (argc == 2) {
+        num_threads = atoi(argv[1]);
+        printf("No arguments for dimensions of mandelbrot image have been passed.\n"); 
+        printf ("Default values for dimensions m and n of mandelbrot image are (second and third argument): m=%d, n=%d.\n", m, n);
+    }
+    
+    else if (argc ==3){
+        printf("You passed only one number for dimensions m and n of mandelbrot image (second and third argument). By default, n is set to m if no argument for n is given.\n");
+        num_threads = atoi(argv[1]);
+        m = atoi(argv[2]);
+        n = atoi(argv[2]);
+    }
+    
+    else if (argc == 4) {
+        num_threads = atoi(argv[1]);
+        m = atoi(argv[2]);
+        n = atoi(argv[3]);
+    }
+    
+    else {
+        printf("Error: Too many arguments have been passed.\n");
+        printf("Default value for number of threads (first argument) is: %d.\n", num_threads);
+        printf ("Default values for dimensions m and n of mandelbrot image are (second and third argument): m=%d, n=%d.\n", m, n);
+    }
+    
 /*
   Carry out the iteration for each pixel, determining COUNT.
 */
@@ -99,42 +135,6 @@ int main ( ) {
     }
   }
 }
-
-  wtime = omp_get_wtime ( ) - wtime;
-  printf ( "\n" );
-  printf ( "  Time = %g seconds.\n", wtime );
-/*
-  Write data to an ASCII PPM file.
-*/
-  output_unit = fopen ( output_filename, "wt" );
-
-  fprintf ( output_unit, "P3\n" );
-  fprintf ( output_unit, "%d  %d\n", n, m );
-  fprintf ( output_unit, "%d\n", 255 );
-
-  for ( i = 0; i < m; i++ )
-  {
-    for ( jlo = 0; jlo < n; jlo = jlo + 4 )
-    {
-      jhi = i4_min ( jlo + 4, n );
-      for ( j = jlo; j < jhi; j++ )
-      {
-        fprintf ( output_unit, "  %d  %d  %d", r[i][j], g[i][j], b[i][j] );
-      }
-      fprintf ( output_unit, "\n" );
-    }
-  }
-
-  fclose ( output_unit );
-  printf ( "\n" );
-  printf ( "  Graphics data written to \"%s\".\n", output_filename );
-/*
-  Terminate.
-*/
-  printf ( "\n" );
-  printf ( "MANDELBROT_OPENMP\n" );
-  printf ( "  Normal end of execution.\n" );
-  printf ( "\n" );
 
   return 0;
 }

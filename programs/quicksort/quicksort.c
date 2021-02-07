@@ -97,6 +97,10 @@ int main (int argc, char *argv[]){
  
     // Generate the array.
     data = (int *)malloc (sizeof (int) * n);
+    if (data == NULL) {
+        printf("Error: Could not allocate array of size %d\n", n);
+        return 1;
+    }
     for (i=0; i<n; i++ ) {
         data[i] = rand()%n;
     }

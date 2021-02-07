@@ -37,9 +37,9 @@ int main(int argc, char *argv[]){
         printf ("No value for list length has been provided (first argument). Default length is 1000000.\n");
     }
 
-    Arr = (int *)malloc( number * sizeof(int));
+    Arr = (int*)malloc(number * sizeof(int));
     if (Arr == NULL) {
-    printf("Error: Could not allocate array of size %d\n",number);
+        printf("Error: Could not allocate array of size %d\n",number);
     return 1;
     }
     for (i=0; i<number; i++ ) {
