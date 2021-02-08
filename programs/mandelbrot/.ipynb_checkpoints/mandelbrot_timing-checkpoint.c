@@ -10,8 +10,8 @@ Copyright of the original code belongs to John Burkardt. Original Code accessed 
 # include <time.h>
 # include <omp.h>
 # define NUMTHREAD 64
-# define M 1000
-# define N 1000
+# define M 1080
+# define N 1920
 # define REPEATS 10
 
 int i4_min (int i1, int i2);
@@ -75,7 +75,7 @@ int main (int argc, char *argv[]) {
     }
 
 /* calculate mandelbrot set multiple times and save minimal execution time*/
-  omp_set_num_threads(numthreads);
+  omp_set_num_threads(num_threads);
   for(int iteration=0;iteration<repeats;iteration++){
     time_start = omp_get_wtime();
         

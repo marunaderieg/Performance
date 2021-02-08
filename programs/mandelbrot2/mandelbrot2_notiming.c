@@ -7,8 +7,8 @@
 #define X_MIN -2.5
 #define X_MAX 1.5
 #define PI 3.1415927
-#define N 1000
-#define M 1000
+#define N 1920
+#define M 1080
 #define NUMTHREADS 64
 
 int main (int argc, char *argv[]) {
@@ -69,7 +69,7 @@ int main (int argc, char *argv[]) {
     b = malloc(n*m*sizeof(char));
     
     //calculate mandelbrot set
-    omp_set_num_threads(numthreads);
+    omp_set_num_threads(num_threads);
     #pragma omp parallel for shared(r,g,b) private(x, y, ry, rx, zx, zy, zx2, zy2, i)
     for(j = 0; j < m * n; j++) {
         x = j % n;

@@ -4,14 +4,13 @@
 #include <math.h>
 #include <omp.h>
 #pragma cling load("libomp.so")
-#define START 10
-#define END 10000
+#define START 0
+#define END 1000000
 #define NUMTHREADS 64
 
 
 static int gProgress    = 0, gPrimesFound = 0;
 long globalPrimes[1000000];
-int CLstart, CLend;
 
 void ShowProgress( int val, int range ) 
 {
@@ -49,7 +48,7 @@ void FindPrimes(int start, int end)
     #pragma omp critical
             globalPrimes[gPrimesFound++] = i; // datarace when incrementing
        }
-       ShowProgress(i, range);
+       // ShowProgress(i, range);
     }
 }
 
@@ -57,26 +56,25 @@ int main (int argc, char *argv[])
 {
     //initialize data
     int start=START, end=END, num_threads=NUMTHREADS;
-    double before, after;
     
     //read passed arguments
     if (argc==1){
         printf("No arguments have been passed. Default values are set to: \n");
-        printf("1. Number of Threads = %d",num_threads);
-        printf("2. Start of Interval, within which prime numbers will be searched for: %d",start);
-        printf("3. End of Interval, within which prime numbers will be searched for: %d",end);
+        printf("1. Number of Threads = %d\n",num_threads);
+        printf("2. Start of Interval, within which prime numbers will be searched for: %d\n",start);
+        printf("3. End of Interval, within which prime numbers will be searched for: %d\n",end);
     }
     else if (argc==2){
         num_threads = atoi(argv[1]);
         printf("No arguments for Interval have been passed. Default values are set to: \n");
-        printf("2. Start of Interval, within which prime numbers will be searched for: %d",start);
-        printf("3. End of Interval, within which prime numbers will be searched for: %d",end);
+        printf("2. Start of Interval, within which prime numbers will be searched for: %d\n",start);
+        printf("3. End of Interval, within which prime numbers will be searched for: %d\n",end);
     }
     else if (argc==3){
         num_threads = atoi(argv[1]);
         printf("Error: No arguments for end of Interval has been passed. Default values are set to: \n");
-        printf("2. Start of Interval, within which prime numbers will be searched for: %d",start);
-        printf("3. End of Interval, within which prime numbers will be searched for: %d",end);
+        printf("2. Start of Interval, within which prime numbers will be searched for: %d\n",start);
+        printf("3. End of Interval, within which prime numbers will be searched for: %d\n",end);
     }
     else if (argc==4){
         num_threads = atoi(argv[1]);
@@ -85,26 +83,26 @@ int main (int argc, char *argv[])
         if (end<start){
             start = START;
             end = END;
-            printf("Error: End of interval has to be larger or equal to start of interval."); 
+            printf("Error: End of interval has to be larger or equal to start of interval.\n"); 
             printf("Default values are set to: \n");
-            printf("2. Start of Interval, within which prime numbers will be searched for: %d",start);
-            printf("3. End of Interval, within which prime numbers will be searched for: %d",end);    
+            printf("2. Start of Interval, within which prime numbers will be searched for: %d\n",start);
+            printf("3. End of Interval, within which prime numbers will be searched for: %d\n",end);    
         }
         if (start<0){
             start = START;
             end = END;
-            printf("Error: Start and End of interval have to be positive integers."); 
+            printf("Error: Start and End of interval have to be positive integers.\n"); 
             printf("Default values are set to: \n");
-            printf("2. Start of Interval, within which prime numbers will be searched for: %d",start);
-            printf("3. End of Interval, within which prime numbers will be searched for: %d",end);    
+            printf("2. Start of Interval, within which prime numbers will be searched for: %d\n",start);
+            printf("3. End of Interval, within which prime numbers will be searched for: %d\n",end);    
         }
     }
     
     else {
         printf("Too many arguments have been passed. Default values are set to: \n");
-        printf("1. Number of Threads = %d",num_threads);
-        printf("2. Start of Interval, within which prime numbers will be searched for: %d",start);
-        printf("3. End of Interval, within which prime numbers will be searched for: %d",end);
+        printf("1. Number of Threads = %d\n",num_threads);
+        printf("2. Start of Interval, within which prime numbers will be searched for: %d\n",start);
+        printf("3. End of Interval, within which prime numbers will be searched for: %d\n",end);
     }
     
     // ensure we start with an odd number
@@ -116,7 +114,7 @@ int main (int argc, char *argv[])
     FindPrimes(start, end);
     
     //output
-    printf("%d primes found between %d and %d\n", gPrimesFound, start, end);
+    printf("\n%d primes found between %d and %d.\n", gPrimesFound, start, end);
     
     return 0;
 }

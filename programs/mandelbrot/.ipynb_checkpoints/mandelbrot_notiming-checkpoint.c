@@ -10,8 +10,8 @@ Copyright of the original code belongs to John Burkardt. Original Code accessed 
 # include <time.h>
 # include <omp.h>
 # define NUMTHREAD 64
-# define M 1000
-# define N 1000
+# define M 1080
+# define N 1920
 
 int i4_min (int i1, int i2);
 
@@ -62,7 +62,7 @@ int main (int argc, char *argv[]) {
     }
 
 /* calculate mandelbrot*/
-    omp_set_num_threads(numthreads);
+    omp_set_num_threads(num_threads);
     # pragma omp parallel shared ( b, count, count_max, g, r, x_max, x_min, y_max, y_min ) private ( i, j, k, x, x1, x2, y, y1, y2 )
     {
     # pragma omp for
