@@ -61,10 +61,9 @@ int main (int argc, char *argv[]) {
         return 1;
     }
 
-/* calculate mandelbrot*/    
-    # pragma omp parallel \
-      shared ( b, count, count_max, g, r, x_max, x_min, y_max, y_min ) \
-      private ( i, j, k, x, x1, x2, y, y1, y2 )
+/* calculate mandelbrot*/
+    omp_set_num_threads(numthreads);
+    # pragma omp parallel shared ( b, count, count_max, g, r, x_max, x_min, y_max, y_min ) private ( i, j, k, x, x1, x2, y, y1, y2 )
     {
     # pragma omp for
 

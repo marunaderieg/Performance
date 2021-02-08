@@ -79,6 +79,7 @@ int main (int argc, char *argv[]) {
     b = malloc(n*m*sizeof(char));
     
     //calculate mandelbrot set multiple times and save minimal execution time
+    omp_set_num_threads(numthreads);
     for(iteration=0;iteration<repeats;iteration++){
         time_start = omp_get_wtime();
         #pragma omp parallel for shared(r,g,b) private(x, y, ry, rx, zx, zy, zx2, zy2, i)

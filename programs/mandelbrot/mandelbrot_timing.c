@@ -75,12 +75,11 @@ int main (int argc, char *argv[]) {
     }
 
 /* calculate mandelbrot set multiple times and save minimal execution time*/
+  omp_set_num_threads(numthreads);
   for(int iteration=0;iteration<repeats;iteration++){
     time_start = omp_get_wtime();
         
-    # pragma omp parallel \
-      shared ( b, count, count_max, g, r, x_max, x_min, y_max, y_min ) \
-      private ( i, j, k, x, x1, x2, y, y1, y2 )
+    # pragma omp parallel shared ( b, count, count_max, g, r, x_max, x_min, y_max, y_min ) private ( i, j, k, x, x1, x2, y, y1, y2 )
     {
     # pragma omp for
 
