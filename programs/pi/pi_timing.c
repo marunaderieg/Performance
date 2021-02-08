@@ -97,4 +97,6 @@ int main(int argc, char *argv[]){
     
     //output
     printf("Smallest execution time of %d runs: %f \n",repeats,time_min);
+    
+    return 0;
 }

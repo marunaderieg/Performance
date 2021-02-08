@@ -68,4 +68,6 @@ int main(int argc, char *argv[]){
     fPi = CalcPi(n, num_threads);
     
     printf("Calculated Pi is: %f \n",fPi);
+    
+    return 0;
 }
