@@ -4,9 +4,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <omp.h>
-#include <time.h>
 #pragma cling load("libomp.so")
-#define LENGTH 100000
+#define LENGTH 1000000
 #define REPEATS 10 
 #define NUMTHREADS 64
 
@@ -84,7 +83,7 @@ void validate_sort (int n, int *data){
 int main (int argc, char *argv[]){
 
     //initialize data
-    int n=LENGTH, repeats=REPEATS, num_threads=NUMTHREADS, low_limit=100, *data;
+    int n=LENGTH, repeats=REPEATS, num_threads=NUMTHREADS, low_limit=100;
     double time, time_min, time_start, time_end;
     
     //check for passed arguments
@@ -118,20 +117,20 @@ int main (int argc, char *argv[]){
         printf ("3. Length of array to be sorted: %d.\n", n);
     }
     
-    
-    // Generate the array.
-    data = (int *)malloc (sizeof (int) * n);
-    if (data == NULL) {
-        printf("Error: Could not allocate array of size %d\n", n);
-        return 1;
-    }
-    for (int i=0; i<n; i++ ) {
-        data[i] = rand()%n;
-    }
-    
     // execute quicksort algorithm multiple times and save smallest execution time to time file
     omp_set_num_threads(num_threads);
     for(int iteration=0;iteration<repeats;iteration++){
+        //generate array of random numbers (seed will be same for each run)
+        int *data;
+        data = (int *)malloc (sizeof (int) * n);
+        if (data == NULL) {
+            printf("Error: Could not allocate array of size %d\n", n);
+            return 1;
+        }
+        for (int i=0; i<n; i++ ) {
+            data[i] = rand()%n;
+        }
+        //measure time while running algorithm
         time_start = omp_get_wtime();
         par_quick_sort (n-1, &data[0], low_limit);
         time_end = omp_get_wtime();
@@ -140,6 +139,9 @@ int main (int argc, char *argv[]){
         else {
             if (time<time_min) time_min = time;
         }
+        //check result and free data
+        validate_sort (n, &data[0]);
+        free(data);
     }
 
     //write smallest execution time to time file
@@ -150,10 +152,6 @@ int main (int argc, char *argv[]){
     
     //output
     printf("Smallest execution time of %d runs: %f \n",repeats,time_min);
-    
-    //check if result is correct and free up space
-    validate_sort (n, &data[0]);
-    free (data);
 
     return 0;
 }

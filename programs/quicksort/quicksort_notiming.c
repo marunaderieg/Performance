@@ -4,9 +4,8 @@
 #include <stdio.h>
 #include <math.h>
 #include <omp.h>
-#include <time.h>
 #pragma cling load("libomp.so")
-#define LENGTH 100000
+#define LENGTH 1000000
 #define NUMTHREADS 64
 
 int partition (int p,   int r,   int *data){
@@ -84,7 +83,6 @@ int main (int argc, char *argv[]){
 
     //initialize data
     int n=LENGTH, num_threads=NUMTHREADS, low_limit=100, *data;
-    double time, time_min, time_start, time_end;
     
     //check for passed arguments
     if (argc == 1) {
@@ -107,7 +105,6 @@ int main (int argc, char *argv[]){
         printf ("2. Length of array to be sorted: %d.\n", n);
     }
     
-    
     // Generate the array.
     data = (int *)malloc (sizeof (int) * n);
     if (data == NULL) {
@@ -118,9 +115,13 @@ int main (int argc, char *argv[]){
         data[i] = rand()%n;
     }
     
-    // execute quicksort algorithm multiple
+    //quicksort algorithm
     omp_set_num_threads(num_threads);
     par_quick_sort (n-1, &data[0], low_limit);
+    
+    //check if result is correct and free up space
+    //validate_sort (n, &data[0]);
+    //free (data);
 
     return 0;
 }

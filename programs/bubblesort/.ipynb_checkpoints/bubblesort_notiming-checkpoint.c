@@ -2,7 +2,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+#include <omp.h>
+#pragma cling load("libomp.so")
+#define LENGTH 10000
+#define NUMTHREADS 64
 
 void bubble_sort(int a[], int n);
 void validate_sort (int n, int *data);
@@ -10,41 +13,50 @@ void swap();
 void bubblesort_parallel (int a[], int N);
 
 int main(int argc, char* argv[]) {
-    //measure time    
-    struct timespec start, end;
-    clock_gettime(CLOCK_REALTIME, &start);
-    
+
     //initialize data
-    int i,j;
-    int n = 1000000;
-    if (argc > 1) {
-            n = atoi(argv[1]);
-    }
-    else {
-        printf ("No value for list length (first argument) has been provided. Default length is 1000000.\n");
+    int n=LENGTH, num_threads=NUMTHREADS, i, j;
+
+    //check for passed arguments
+    if (argc == 1) {
+        printf("No arguments have been passed. Default values are: \n"); 
+        printf("1. Number of threads: %d.\n", num_threads);
+        printf ("2. Length of array to be sorted: %d.\n", n);
+    }  
+    else if (argc == 2) {
+        num_threads = atoi(argv[1]);
+        printf("No argument for list length has been passed. Default value is: \n"); 
+        printf ("2. Length of array to be sorted: %d.\n", n);
+    } 
+    else if (argc == 3) {
+        num_threads = atoi(argv[1]);
+        n = atoi(argv[2]);
+    } 
+    else{
+        printf("Error: Too many arguments have been passed. Defaults are set to:\n");
+        printf("1. Number of threads: %d.\n", num_threads);
+        printf ("2. Length of array to be sorted: %d.\n", n);
     }
     
-    // Generate the array.
+    //generate the array.
     int *a = (int *)malloc (sizeof (int) * n);
     if (a == NULL) {
-        printf("Error: Could not allocate array of size %d\n", n);
+        printf("Error: Could not allocate array of n %d\n", n);
         return 1;
     }
     for (i=0; i<n; i++ ) {
         a[i] = rand()%n;
     }
     
-    //quicksort algorithm
+    //bubblesort algorithm
+    omp_set_num_threads(num_threads);
     bubblesort_parallel(a, n);
-    
-    //measure time
-    clock_gettime(CLOCK_REALTIME, &end); 
-    double time_spent_sec= (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec)/1e9;
-    printf("Time spent: %g \n",time_spent_sec);
     
     //check if result is correct and free up space
     validate_sort (n, &a[0]);
     free (a);
+    
+    return 0;
 } 
 
 
