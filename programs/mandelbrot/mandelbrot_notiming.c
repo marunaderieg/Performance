@@ -119,7 +119,7 @@ int main (int argc, char *argv[]) {
   return 0;
 }
 
-int i4_min ( int i1, int i2 ) {
+int i4_min (int i1, int i2) {
 /* returns the smaller of two integers*/
   int value;
   if ( i1 < i2 ) value = i1;
