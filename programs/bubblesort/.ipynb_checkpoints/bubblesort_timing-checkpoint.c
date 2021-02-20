@@ -73,7 +73,7 @@ int main(int argc, char* argv[]) {
             if (time<time_min) time_min = time;
         }
         //check result and free data
-        validate_sort (n, &a[0]);
+        //validate_sort (n, &a[0]);
         free(a);
     }
 
