@@ -1,3 +1,5 @@
+//Copyright belongs to RWTH-Aachen University, ICT. Original code has been modified by Maruna Derieg.
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>

@@ -1,3 +1,5 @@
+//Copyright belongs to RWTH-Aachen University, ICT. Original code has been modified by Maruna Derieg.
+
 #include <omp.h>
 #pragma cling load("libomp.so")
 #include <stdio.h>
