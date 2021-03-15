@@ -58,3 +58,5 @@ If you want to have a timing.o version of your program, you have to implement th
 
 What programming language does your code need to be written in? 
 Whatever you want! This is the beauty of these notebooks...you can use c, c++, or any other programming language as long as you follow the requirements I have just described. Same applies to your preferred language for parallel programming. 
+
+Should you have a question a find a bug, please write an email to maruna@gmx.ch.
