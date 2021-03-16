@@ -7,11 +7,11 @@ Before you can start using the Notebooks you need to install the following depen
 To do this, open a terminal window and run
     - conda install numpy matplotlib
 
-In case you have never worked with Jupyter Notebook, here the most important in a nutshel: 
+In case you have never worked with Jupyter Notebook, here the most important in a nutshell: 
 - to execute a cell with code, you need to first click on it, then type Shift+Enter
 - once the cell has executed, you will see the output of the cell and a number on the top left corner of the cell
 - while the cell is computing, you will see a star at the top left corner of the cell
-- sometimes things go wrong. If the cell just doesn't finnish computing, you might want to restart the kernel. You can do this from within the Jupyter notebook GUI, just click on the circle arrow symbol on the top center
+- sometimes things go wrong. If the cell just doesn't finish computing, you might want to restart the kernel. You can do this from within the Jupyter notebook GUI, just click on the circle arrow symbol on the top center
 - if you restart the kernel, you might have to rerun some of the previous cells in order for the code to work (for example you probably want to import the library again)
 
 If you just want to look at the main notebook called 'performance' you are good to go. You can ignore the rest of this text. In case you wish to play around with code or even test your own programs, you want to keep reading.
