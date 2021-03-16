@@ -86,10 +86,19 @@ int main (int argc, char *argv[])
     else if (argc==4){
         num_threads = atoi(argv[1]);
         repeats = atoi(argv[2]);
-        printf("Error: No arguments for end of Interval has been passed. Default values are set to: \n");
-        printf("3. Start of Interval, within which prime numbers will be searched for: %d.\n",start);
-        printf("4. End of Interval, within which prime numbers will be searched for: %d.\n",end);
+        start = 0;
+        end = atoi(argv[3]);
+        printf("Only one value for the interval has been passed. In these cases start is set to 0."); 
+        if (end<0){
+            start = START;
+            end = END;
+            printf("Error: Start and End of interval have to be positive integers.\n"); 
+            printf("Default values are set to: \n");
+            printf("2. Start of Interval, within which prime numbers will be searched for: %d\n",start);
+            printf("3. End of Interval, within which prime numbers will be searched for: %d\n",end);    
+        }
     }
+    
     else if (argc==5){
         num_threads = atoi(argv[1]);
         repeats = atoi(argv[2]);

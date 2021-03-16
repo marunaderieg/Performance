@@ -196,16 +196,31 @@ int main(int argc, char *argv[]){
         printf("Argument 6: Error tolerance for iterrative solver: 1e-15\n");
         printf("Argument 7: Maximum iterations for solver: %d\n",mits);   
     }
-    else if (argc<8){
+    else if (argc==3){
         num_threads=atoi(argv[1]);
+        n=atoi(argv[2]);
+        m=n
         printf("Number of Threads is set to %d\n",num_threads);
-        printf("An incomplete list of arguments for the Jacobi solver has been passed. Provide complete list of arguments to override default values. Defaults are set to: \n");
         printf("Argument 2 and 3: Grid dimension in x,y direction: %d, %d \n",n,m);
+        printf("An incomplete list of arguments for the Jacobi solver has been passed. Defaults are set to: \n");
         printf("Argument 4: Helmholts constant (alpha): %f\n",alpha);
         printf("Argument 5: Successive over-relaxation parameter: %f\n",relax);
         printf("Argument 6: Error tolerance for iterrative solver: 1e-15\n");
         printf("Argument 7: Maximum iterations for solver: %d\n",mits);  
     }
+    else if (argc<8){
+        num_threads=atoi(argv[1]);
+        n=atoi(argv[2]);
+        m=atoi(argv[3]);
+        printf("Number of Threads is set to %d\n",num_threads);
+        printf("Argument 2 and 3: Grid dimension in x,y direction: %d, %d \n",n,m);
+        printf("An incomplete list of arguments for the Jacobi solver has been passed. Defaults are set to: \n");
+        printf("Argument 4: Helmholts constant (alpha): %f\n",alpha);
+        printf("Argument 5: Successive over-relaxation parameter: %f\n",relax);
+        printf("Argument 6: Error tolerance for iterrative solver: 1e-15\n");
+        printf("Argument 7: Maximum iterations for solver: %d\n",mits);  
+    }
+
     else if (argc ==8) {
         num_threads=atoi(argv[1]);
         n = atoi(argv[2]);
