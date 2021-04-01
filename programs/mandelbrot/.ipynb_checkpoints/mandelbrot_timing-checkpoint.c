@@ -20,7 +20,7 @@ int main (int argc, char *argv[]) {
     
 /*initialize data*/
     int num_threads=NUMTHREAD, m=M, n=N, repeats=REPEATS, count_max=2000, c, i, j, jhi, jlo, k;
-    char *output_filename = "picture.txt";
+    char *output_filename = "/tmp/mandelbrot_picture.txt";
     FILE *output_unit;
     double time, time_min, time_start, time_end;
     double x_max=1.25, x_min= -2.25, y_max = 1.75, y_min= - 1.75, x, x1, x2, y, y1, y2;
@@ -155,7 +155,7 @@ int main (int argc, char *argv[]) {
 
 /*write smallest execution time to time file*/
   FILE *timefile;
-  timefile = fopen ("./time.txt","w");
+  timefile = fopen ("/tmp/time.txt","w");
   fprintf (timefile, "%f",time_min);
   fclose (timefile);
     

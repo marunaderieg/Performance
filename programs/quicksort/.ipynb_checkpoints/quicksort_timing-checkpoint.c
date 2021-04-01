@@ -1,4 +1,4 @@
- /* Copyright belongs to https://github.com/avcourt, code accessed on https://github.com/avcourt/task-parallelism-omp/blob/master/code/quick_tasks.c. Code edited by Maruna Derieg. */
+ /* Copyright belongs to https://github.com/avcourt, code accessed at https://github.com/avcourt/task-parallelism-omp/blob/master/code/quick_tasks.c on 12.11.2020. Original code has been modified by Maruna Derieg. */
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -146,7 +146,7 @@ int main (int argc, char *argv[]){
 
     //write smallest execution time to time file
     FILE * timefile;
-    timefile = fopen ("./time.txt","w");
+    timefile = fopen ("/tmp/time.txt","w");
     fprintf (timefile, "%f",time_min);
     fclose (timefile);
     

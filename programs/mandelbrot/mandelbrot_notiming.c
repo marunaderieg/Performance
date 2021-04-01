@@ -19,7 +19,7 @@ int main (int argc, char *argv[]) {
     
 /*initialize data*/
     int num_threads=NUMTHREAD, m=M, n=N, count_max=2000, c, i, j, jhi, jlo, k;
-    char *output_filename = "picture.txt";
+    char *output_filename = "/tmp/mandelbrot_picture.txt";
     FILE *output_unit;
     double x_max=1.25, x_min= -2.25, y_max = 1.75, y_min= - 1.75, x, x1, x2, y, y1, y2;
     
