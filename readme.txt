@@ -44,12 +44,12 @@ When would you want to use which version (timing.o or notiming.o)?
 - If you plan to measure the execution time of the entire program, then you want to use the 'notiming.o' version of a program. 
 - If you plan to measure the execution time only on the algorithm itself, then you want to use the 'timing.o' version of a program. 
 
-How to measure execution time of a 'notiming.o' executable from within a Jupyer Notebook?
+How to measure execution time of a 'notiming.o' executable from within a Jupyter Notebook?
 You can use the magic command %timeit for this. A time measurement with 10 repeats, 64 threads and problem size 108 could look like this:
 timeit_object = %timeit -o -n 10 -r 1 -q ! ./notiming.o 64 108  >/dev/null
 To access the measured time you can run: time = timeit_object.best 
 
-How to measure execution time of a 'timing.o' executable from within a Jupyer Notebook?
+How to measure execution time of a 'timing.o' executable from within a Jupyter Notebook?
 Here the repeated time measurements are made within the program itself. The program will save the execution time to a file called `/tmp/time.txt`. A time measurement with 10 repeats, 64 threads and problem size 108 looks like this:
 ! ./timing.o 64 10 108 >/dev/null
 To import the time from the `/tmp/time.txt` file into the Jupyter Notebook you can do something like: 
@@ -101,7 +101,7 @@ When I wrote the Notebooks I assumed that you are working on a machine that can 
 1. Place the main folder `performance` into your home folder.
 2. If you don't have numpy and matplotlib installed, you need to install these dependencies (run `conda install numpy matplotlib` in the terminal)
 3. If your local machine does not support at least 64 threads, you either have to ignore all data points for threads higher than the thread number your machine supports or you adjust the code so it doesn't make any measurements for higher thread numbers. Remember, in openMP you can request as many threads as you wish, but will not be given more threads than your machine supports. 
-4. Depending on your system you might have to recompile the programs in the `programs` folder. Remember to compile them with the -fopenmp option. If you are lucky, you can just run `gcc myprogram_notiming.c -fopenmp -o notiming.o -lm` in the terminal. If you are unlucky you need to do some adjustmetns first before you can compile openmp programs on your system. 
+4. Depending on your system you might have to recompile the programs in the `programs` folder. Remember to compile them with the -fopenmp option. If you work on a unix based system, you can recompile all the programs with the `make file`. Just open the terminal, navigate to the `performance/programs` folder and run `make all Makefile`. If you are unlucky you need to do some adjustments on your system first before you can compile openmp programs on your system. 
 5. If you work on Windows and don't use WSL or WSL2 then you have to adjust the path names so that they work with your system. In case you don't have a /tmp folder you need to use another folder instead. 
 
 _________________________________________________________
