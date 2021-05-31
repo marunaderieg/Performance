@@ -103,7 +103,3 @@ When I wrote the Notebooks I assumed that you are working on a machine that can 
 3. If your local machine does not support at least 64 threads, you either have to ignore all data points for threads higher than the thread number your machine supports or you adjust the code so it doesn't make any measurements for higher thread numbers. Remember, in openMP you can request as many threads as you wish, but will not be given more threads than your machine supports. 
 4. Depending on your system you might have to recompile the programs in the `programs` folder. Remember to compile them with the -fopenmp option. If you work on a unix based system, you can recompile all the programs with the `make file`. Just open the terminal, navigate to the `performance/programs` folder and run `$ make clean && make all`. If you are unlucky you need to do some adjustments on your system first before you can compile openmp programs on your system. 
 5. If you work on Windows and don't use WSL or WSL2 then you have to adjust the path names so that they work with your system. In case you don't have a /tmp folder you need to use another folder instead. 
-
-_________________________________________________________
-
-Should you have a question or find a bug, please write an email to maruna@gmx.ch.
