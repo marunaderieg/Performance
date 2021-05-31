@@ -5,7 +5,6 @@ You will read about:
 - Test the performance of the benchmarks in the 'programs' folder
 - How can you analyze your own programs?
 - Using the Notebook 'Performance' on your local machine
-- Support
 
 _________________________________________________________
 

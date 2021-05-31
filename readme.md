@@ -4,7 +4,6 @@
 > [- Test the performance of the benchmarks in the 'programs' folder](#test)<br>
 > [- How can you analyze your own programs?](#yourprogram)<br>
 > [- Using the Notebook 'Performance' on your local machine](#local)<br>
-> [- Support](#support)
 
 ## How to work with Jupyter Notebook <a class="anchor" id="jupyter"></a>
 Here the most important in a nutshell: 
